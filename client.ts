@@ -248,6 +248,7 @@ export class GrpcClientImpl implements GrpcClient {
   close() {
     this.conn.close();
     this.conn = null!;
+    clearTimeout(this.flushTimer);
     this.closed = true;
   }
 
