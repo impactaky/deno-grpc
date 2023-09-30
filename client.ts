@@ -82,6 +82,8 @@ class NodeStreamReader {
   }
 }
 
+type Req = { [k: string]: any; }
+
 export interface GrpcClient {
   close(): void;
 
@@ -252,7 +254,7 @@ export class GrpcClientImpl implements GrpcClient {
     this.closed = true;
   }
 
-  async _callUnary<Req, Res>(name: string, req: Req): Promise<Res> {
+  async _callUnary<Res>(name: string, req: Req): Promise<Res> {
     await this.ensureConnection();
 
     // TODO: throw error here on not found
@@ -318,7 +320,7 @@ export class GrpcClientImpl implements GrpcClient {
     throw new Error("not expected");
   }
 
-  async *_callStream<Req, Res>(name: string, req: Req): AsyncGenerator<Res> {
+  async *_callStream<Res>(name: string, req: Req): AsyncGenerator<Res> {
     await this.ensureConnection();
 
     // TODO: throw error here on not found

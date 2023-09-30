@@ -704,7 +704,7 @@ export class Deserializer {
         const payloadSize = DeserializerFrames.commonHeader(
           this._buffer,
           this._frame
-        );
+        ) as number;
         if (payloadSize <= MAX_PAYLOAD_SIZE) {
           this._next(+payloadSize);
         } else {
