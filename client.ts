@@ -136,9 +136,11 @@ export class GrpcClientImpl implements GrpcClient {
 
       //TODO: move to throttling
       clearTimeout(this.flushTimer);
-      this.flushTimer = setTimeout(() => {
-        this.flush();
-      }, 10);
+      if (!this.closed) {
+        this.flushTimer = setTimeout(() => {
+          this.flush();
+        }, 10);
+      }
     });
   }
 
@@ -250,8 +252,8 @@ export class GrpcClientImpl implements GrpcClient {
   close() {
     this.conn.close();
     this.conn = null!;
-    clearTimeout(this.flushTimer);
     this.closed = true;
+    clearTimeout(this.flushTimer);
   }
 
   async _callUnary<Res>(name: string, req: Req): Promise<Res> {
